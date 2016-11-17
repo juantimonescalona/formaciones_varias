@@ -164,3 +164,10 @@ Esta comentado como busca en el galaxy un rol, usando por ejemplo el ultimo:
 src: geerlingguy.jenkins  --> se transforma en  -->https://galaxy.ansible.com/geerlingguy/jenkins/ --> cuyo código está en --> https://github.com/geerlingguy/ansible-role-jenkins
 
 Al ejecutar el Vagrantfile nos bajaria todos los roles necesarios y los ejecutaría en nuestra máquina virtual.
+
+Para ejecutar este ejemplo tenemos los dos pasos README.md :
+
+Run the following command to install the necessary Ansible roles for this profile: ```$ ansible-galaxy install -r requirements.yml```
+
+Once all of that is done, you can simply type in ```vagrant up``` , 
+and Vagrant will create a new VM, install the base box, and configure it.
