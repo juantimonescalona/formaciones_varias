@@ -34,3 +34,66 @@ Vault has built-in support for secret revocation.
 Vault can revoke not only single secrets, but a tree of secrets, 
 for example all secrets read by a specific user, or all secrets of a particular type. 
 Revocation assists in key rolling as well as locking down systems in the case of an intrusion.
+
+# Ansible Vault module
+New in Ansible 1.5, “Vault” is a feature of ansible that allows keeping sensitive data such as passwords or keys in encrypted files, 
+rather than as plaintext in your playbooks or roles. These vault files can then be distributed or placed in source control.
+
+To enable this feature, a command line tool, ansible-vault is used to edit files, and a command line flag –ask-vault-pass or 
+–vault-password-file is used. Alternately, you may specify the location of a password file or command Ansible to always prompt for the 
+password in your ansible.cfg file. These options require no command line flag usage.
+
+For best practices advice, refer to Variables and Vaults.
+
+##Creating Encrypted Files
+To create a new encrypted data file, run the following command:
+```
+$ ansible-vault create foo.yml
+```
+First you will be prompted for a password. 
+The password used with vault currently must be the same for all files you wish to use together at the same time.
+
+##Editing Encrypted Files
+```
+$ ansible-vault edit foo.yml
+```
+
+##Rekeying Encrypted Files
+```
+$ ansible-vault rekey foo.yml bar.yml
+```
+This command can rekey multiple data files at once and will ask for the original password and also the new password.
+
+##Decrypting Encrypted Files
+```
+$ ansible-vault decrypt foo.yml bar.yml
+```
+
+##Viewing Encrypted Files
+```
+$ ansible-vault view foo.yml bar.yml
+```
+
+##Running a Playbook With Vault
+```
+$ ansible-playbook site.yml --ask-vault-pass
+```
+
+Alternatively, passwords can be specified with a file or a script, the script version will require Ansible 1.7 or later. When using this flag, 
+ensure permissions on the file are such that no one else can access your key and do not add your key to source control:
+```
+ansible-playbook site.yml --vault-password-file ~/.vault_pass.txt
+
+ansible-playbook site.yml --vault-password-file ~/.vault_pass.py
+```
+The password should be a string stored as a single line in the file.
+
+You can also set ```ANSIBLE_VAULT_PASSWORD_FILE``` environment variable, e.g. ```ANSIBLE_VAULT_PASSWORD_FILE=~/.vault_pass.txt``` and Ansible 
+will automatically search for the password in that file.
+
+##Speeding Up Vault Operations
+By default, Ansible uses PyCrypto to encrypt and decrypt vault files. If you have many encrypted files, 
+decrypting them at startup may cause a perceptible delay. To speed this up, install the cryptography package:
+```
+  pip install cryptography
+```
