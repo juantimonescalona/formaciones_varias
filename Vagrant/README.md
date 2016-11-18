@@ -1,10 +1,74 @@
 #Uso básico de Vagrant
 ##¿Qué es Vagrant?
 Vagrant es una herramienta de HashiCorp que sirve para crear entornos de trabajo portables y ligeros
-para el desarrollo, usando automatizaciones con scripts se puede levantar máquinas virtuales con distintos
+para el desarrollo, usando automatizaciones con scripts, se puede levantar máquinas virtuales con distintos
 sistemas operativos y configuraciones. 
+Hay varios 
 Vagrant permite acoplarse a nuestros playbooks de Ansible para realizar test automáticos, simulando estar en
 una máquina con el SO igual que en el que queremos instalar nuestro ansible-playbook.
+
+##Instalacion de Vagrant
+Ref: https://www.vagrantup.com/docs/installation/source.html
+
+
+###Installing Vagrant from Source
+
+Instalar Ruby
+
+Hay que tener un Ruby con versión >= 2.0 para poder desarrollar con Vagrant. La versión especifica de Ruby esta documentada en  Vagrant's gemspec. 
+Revisar vagrant.gemspec en el repositorio de GitHub, actualmente a día 18/11/2016 está pidiendo estas versiones minimas
+```
+s.required_ruby_version     = "~> 2.2"
+s.required_rubygems_version = ">= 1.3.6"
+```
+
+No usar el sistemas de Ruby - usar un Ruby version manager como rvm or chruby
+Asegurate de tener la ultima versión de Rubygems
+
+Ensure you have installed a version of Bundler that is compatible with Vagrant.
+
+The bundler constraint is a floating requirement in Vagrant. You will need to inspect the vagrant.gemspec to determine the version when you are compiling from source. For example, if the gemspec specifies version 1.2.3, you will need to install a version of Bundler that satisfies that constraint.
+
+You can install a specific version of bundler with the following command:
+
+```
+    gem install bundler -v '1.2.3'
+```
+Clone Vagrant
+
+Clone Vagrant's repository from GitHub into the directory where you keep code on your machine:
+```
+$ git clone https://github.com/mitchellh/vagrant.git
+```
+Next, cd into that path. All commands will be run from this path:
+```
+$ cd /path/to/your/vagrant/clone
+```
+Run the bundle command with a required version* to install the requirements:
+```
+$ bundle _1.10.6_ install
+```
+You can now run Vagrant by running bundle exec vagrant from inside that directory.
+Use Locally
+
+In order to use your locally-installed version of Vagrant in other projects, you will need to create a binstub and add it to your path.
+
+First, run the following command from the Vagrant repo:
+```
+$ bundle --binstubs exec
+```
+This will generate files in exec/, including vagrant. You can now specify the full path to the exec/vagrant anywhere on your operating system:
+```
+$ /path/to/vagrant/exec/vagrant init -m hashicorp/precise64
+```
+Note that you will receive warnings that running Vagrant like this is not supported. It's true. It's not. You should listen to those warnings.
+
+If you do not want to specify the full path to Vagrant (i.e. you just want to run vagrant), you can create a symbolic link to your exec:
+```
+$ ln -sf /path/to/vagrant/exec/vagrant /usr/local/bin/vagrant
+```
+When you want to switch back to the official Vagrant version, simply remove the symlink.
+
 
 ##Como usamos Vagrant manualmente
 Vagrant tiene un repositorio con los sistemas operativos que podemos levantar y que han sido ya creados por otros
